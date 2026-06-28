@@ -10,7 +10,18 @@ struct AppCommands: Commands {
     var body: some Commands {
         CommandGroup(after: .newItem) {
             Button("Nova Aba") {
+                let existingWindow = NSApp.keyWindow
+                let windowsBefore = Set(NSApp.windows)
+
                 NSApp.sendAction(#selector(NSResponder.newWindowForTab(_:)), to: nil, from: nil)
+
+                DispatchQueue.main.async {
+                    if let newWindow = Set(NSApp.windows).subtracting(windowsBefore).first,
+                       let existingWindow = existingWindow {
+                        existingWindow.addTabbedWindow(newWindow, ordered: .above)
+                        newWindow.makeKeyAndOrderFront(nil)
+                    }
+                }
             }
             .keyboardShortcut("t", modifiers: .command)
         }
