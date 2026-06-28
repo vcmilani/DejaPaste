@@ -7,8 +7,7 @@ struct DejaPasteApp: App {
             ContentView()
                 .frame(minWidth: 500, minHeight: 400)
         }
-        .windowStyle(.titleBar)
-        .windowToolbarStyle(.unified)
+        .windowStyle(.hiddenTitleBar)
         .commands {
             AppCommands()
         }

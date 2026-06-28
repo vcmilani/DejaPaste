@@ -38,6 +38,11 @@ struct AppCommands: Commands {
             }
             .keyboardShortcut("c", modifiers: .command)
 
+            Button("Selecionar Tudo") {
+                NSApp.sendAction(#selector(NSText.selectAll(_:)), to: nil, from: nil)
+            }
+            .keyboardShortcut("a", modifiers: .command)
+
             Divider()
 
             Button("Limpar tudo") {
