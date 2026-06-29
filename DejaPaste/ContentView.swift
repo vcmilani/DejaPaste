@@ -10,7 +10,16 @@ struct ContentView: View {
             editor
             statusBar
         }
-        .background(Color(NSColor.windowBackgroundColor))
+        .background(
+            ZStack {
+                Color(NSColor.windowBackgroundColor)
+                LinearGradient(
+                    colors: [Color.white.opacity(0.05), Color.black.opacity(0.07)],
+                    startPoint: .top, endPoint: .bottom
+                )
+            }
+            .ignoresSafeArea()
+        )
         .overlay(alignment: .top) { toast }
         .onReceive(NotificationCenter.default.publisher(for: .pasteAsPlain)) { _ in
             vm.pasteFromClipboard()
@@ -58,7 +67,6 @@ struct ContentView: View {
 
     private var editor: some View {
         PlainTextEditor(text: $vm.text)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .overlay {
                 if vm.text.isEmpty {
                     VStack(spacing: 8) {
@@ -75,6 +83,15 @@ struct ContentView: View {
                 }
             }
             .animation(.easeInOut(duration: 0.2), value: vm.text.isEmpty)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .strokeBorder(.primary.opacity(0.08), lineWidth: 1)
+            )
+            .shadow(color: .black.opacity(0.10), radius: 8, y: 2)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var statusBar: some View {

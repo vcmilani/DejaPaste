@@ -22,6 +22,9 @@ struct PlainTextEditor: NSViewRepresentable {
         textView.backgroundColor = NSColor.textBackgroundColor
         textView.textColor = NSColor.textColor
 
+        scrollView.drawsBackground = true
+        scrollView.backgroundColor = NSColor.textBackgroundColor
+
         textView.isAutomaticQuoteSubstitutionEnabled = false
         textView.isAutomaticDashSubstitutionEnabled = false
 
