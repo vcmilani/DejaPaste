@@ -6,20 +6,13 @@ class EditorViewModel: ObservableObject {
     @Published var text: String = ""
     @Published var showFeedback: Bool = false
     @Published var feedbackMessage: String = ""
+    @Published var feedbackIcon: String = "checkmark.circle.fill"
 
     private var feedbackTimer: AnyCancellable?
 
-    var statsText: String {
-        let chars = text.count
-        let words = text.split(whereSeparator: \.isWhitespace).count
-        let lines = text.isEmpty ? 0 : text.components(separatedBy: "\n").count
-
-        let charsStr = chars == 1 ? "1 caractere" : "\(chars) caracteres"
-        let wordsStr = words == 1 ? "1 palavra" : "\(words) palavras"
-        let linesStr = lines == 1 ? "1 linha" : "\(lines) linhas"
-
-        return text.isEmpty ? "0 caracteres" : "\(charsStr) · \(wordsStr) · \(linesStr)"
-    }
+    var charCount: Int { text.count }
+    var wordCount: Int { text.split(whereSeparator: \.isWhitespace).count }
+    var lineCount: Int { text.isEmpty ? 0 : text.components(separatedBy: "\n").count }
 
     func pasteFromClipboard() {
         let pasteboard = NSPasteboard.general
@@ -35,7 +28,7 @@ class EditorViewModel: ObservableObject {
             insertText(stripped)
             showFeedbackBrief("Formatação removida")
         } else {
-            showFeedbackBrief("Nada para colar")
+            showFeedbackBrief("Nada para colar", icon: "exclamationmark.circle")
         }
     }
 
@@ -61,8 +54,9 @@ class EditorViewModel: ObservableObject {
         }
     }
 
-    private func showFeedbackBrief(_ message: String) {
+    private func showFeedbackBrief(_ message: String, icon: String = "checkmark.circle.fill") {
         feedbackMessage = message
+        feedbackIcon = icon
         withAnimation { showFeedback = true }
         feedbackTimer?.cancel()
         feedbackTimer = Just(())

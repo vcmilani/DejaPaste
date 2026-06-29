@@ -22,6 +22,9 @@ struct PlainTextEditor: NSViewRepresentable {
         textView.backgroundColor = NSColor.textBackgroundColor
         textView.textColor = NSColor.textColor
 
+        scrollView.drawsBackground = true
+        scrollView.backgroundColor = NSColor.textBackgroundColor
+
         textView.isAutomaticQuoteSubstitutionEnabled = false
         textView.isAutomaticDashSubstitutionEnabled = false
 
@@ -62,7 +65,7 @@ struct PlainTextEditor: NSViewRepresentable {
 
         // Intercept paste to always strip formatting
         func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-            if commandSelector == Selector("paste:") {
+            if commandSelector == #selector(NSText.paste(_:)) {
                 let pasteboard = NSPasteboard.general
 
                 // Try plain text first
