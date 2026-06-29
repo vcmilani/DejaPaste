@@ -34,7 +34,11 @@ struct ContentView: View {
 
     private var toolbar: some View {
         HStack(spacing: 12) {
-            Spacer(minLength: 0)
+            Text("Déjà Paste")
+                .font(.headline)
+                .foregroundStyle(.secondary)
+
+            Spacer(minLength: 12)
 
             Button(action: vm.pasteFromClipboard) {
                 Label("Colar puro", systemImage: "clipboard")
@@ -55,14 +59,14 @@ struct ContentView: View {
             .buttonStyle(PillButtonStyle(kind: .destructive))
             .help("Limpar todo o texto (⌘⌫)")
             .disabled(vm.text.isEmpty)
-
-            Spacer(minLength: 0)
         }
-        .padding(.leading, 72)
-        .padding(.trailing, 16)
-        .padding(.top, 6)
+        .padding(.horizontal, 16)
         .padding(.vertical, 10)
-        .background(.ultraThinMaterial)
+        .background(
+            Rectangle()
+                .fill(.ultraThinMaterial)
+                .ignoresSafeArea(edges: .top)
+        )
     }
 
     private var editor: some View {
@@ -100,9 +104,6 @@ struct ContentView: View {
             statChip("text.word.spacing", vm.wordCount)
             statChip("line.3.horizontal", vm.lineCount)
             Spacer()
-            Text("Déjà Paste")
-                .font(.caption)
-                .foregroundStyle(.secondary)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
