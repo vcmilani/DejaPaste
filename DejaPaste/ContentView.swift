@@ -10,6 +10,7 @@ struct ContentView: View {
             editor
             statusBar
         }
+        .ignoresSafeArea(.container, edges: .top)
         .background(
             ZStack {
                 Color(NSColor.windowBackgroundColor)
@@ -21,15 +22,7 @@ struct ContentView: View {
             .ignoresSafeArea()
         )
         .overlay(alignment: .top) { toast }
-        .onReceive(NotificationCenter.default.publisher(for: .pasteAsPlain)) { _ in
-            vm.pasteFromClipboard()
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .copyPlain)) { _ in
-            vm.copyToClipboard()
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .clearAll)) { _ in
-            vm.clear()
-        }
+        .focusedSceneValue(\.editor, vm)
     }
 
     private var toolbar: some View {
@@ -60,13 +53,11 @@ struct ContentView: View {
             .help("Limpar todo o texto (⌘⌫)")
             .disabled(vm.text.isEmpty)
         }
-        .padding(.horizontal, 16)
+        .padding(.leading, 72)
+        .padding(.trailing, 16)
+        .padding(.top, 6)
         .padding(.vertical, 10)
-        .background(
-            Rectangle()
-                .fill(.ultraThinMaterial)
-                .ignoresSafeArea(edges: .top)
-        )
+        .background(.ultraThinMaterial)
     }
 
     private var editor: some View {

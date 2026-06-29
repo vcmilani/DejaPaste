@@ -1,7 +1,12 @@
 import SwiftUI
+import AppKit
 
 @main
 struct DejaPasteApp: App {
+    init() {
+        NSWindow.allowsAutomaticWindowTabbing = false
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
